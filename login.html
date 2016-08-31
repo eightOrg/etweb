@@ -28,18 +28,18 @@
     <script src="assets/js/api.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-                //读取cookie
-                if ($.cookie("remember-me") == "true") {
-                    $("#remember-me").attr("checked", true);
-                    $("#username").val($.cookie("username"));
-                    $("#password").val($.cookie("password"));
-                }
-                //登录按钮
-                $("#login").on('click',function () {
-                    $("#loginForm").attr("action", getApiPath("login"));
-                    saveUserInfo();
-                });
+            //读取cookie
+            if ($.cookie("remember-me") == "true") {
+                $("#remember-me").attr("checked", true);
+                $("#username").val($.cookie("username"));
+                $("#password").val($.cookie("password"));
+            }
+            //登录按钮
+            $("#login").on('click',function () {
+                $("#loginForm").attr("action", getApiPath("login"));
+                saveUserInfo();
             });
+        });
         //保存用户信息
         function saveUserInfo() {
             console.log("yes");
@@ -49,7 +49,7 @@
                 $.cookie("remember-me", "true", { expires: 7 }); // 存储一个带7天期限的 cookie
                 $.cookie("username", username, { expires: 7 }); // 存储一个带7天期限的 cookie
                 $.cookie("password", password, { expires: 7 }); // 存储一个带7天期限的 cookie
-            }else {
+            } else {
                 $.cookie("remember-me", "false", { expires: -1 });
                 $.cookie("username", '', { expires: -1 });
                 $.cookie("password", '', { expires: -1 });
