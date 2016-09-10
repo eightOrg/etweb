@@ -36,13 +36,54 @@
             }
             //登录按钮
             $("#login").on('click',function () {
-                $("#loginForm").attr("action", getApiPath("login"));
                 saveUserInfo();
+                $.ajax({
+                    type: "POST",
+                    url: getApiPath("login"),
+                    data: {username:$("#username").val(), password:$("#password").val()},
+                    headers : {"dev":"pc"},
+                    dataType: "json",
+                    success: function(data){
+                        console.log(data);
+                        if (data.code == '200') {
+                            //存储userId
+
+                            $.cookie("userId", data.ob.userId, { expires: 7 });
+                            $.cookie("sessionId", data.ob.sessionId, { expires: 7 });
+                            alert($.cookie("sessionId"));
+                            //window.location.href = 'admin-index.html';
+                        } else {
+                            alert(false);
+                            //window.location.href = 'admin-404.html';
+                        }
+                    },
+                });
+            });
+            //test
+            $("#test").on('click',function () {
+                $.ajax({
+                    type: "get",
+                    url: getApiPath("user/selectById"),
+                    data: {"id":1},
+                    headers : {'session':$.cookie("sessionId"),"dev":"pc"},
+                    dataType: "json",
+                    success: function(data){
+                        console.log(data);
+                        if (data.code == '200') {
+                            //存储userId
+                            alert(true);
+                            //$.cookie("userId", data.ob.userId, { expires: 7 });
+                            //window.location.href = 'admin-index.html';
+                        } else {
+                            alert(false);
+                            //window.location.href = 'admin-404.html';
+                        }
+                    },
+                });
             });
         });
         //保存用户信息
         function saveUserInfo() {
-            console.log("yes");
             if ($("#remember-me").is(':checked') == true) {
                 var username = $("#username").val();
                 var password = $("#password").val();
@@ -79,8 +120,9 @@
             </label>
             <br />
             <div class="am-cf">
-            <input id="login" type="submit" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl">
-            <input type="submit" name="" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr">
+            <input id="login" type="button" name="" value="登 录" class="am-btn am-btn-primary am-btn-sm am-fl">
+            <input id="test" type="button" name="" value="test" class="am-btn am-btn-primary am-btn-sm am-fl">
+            <input id="forget" type="button" name="" value="忘记密码 ^_^? " class="am-btn am-btn-default am-btn-sm am-fr">
             </div>
         </form>
         <hr>
